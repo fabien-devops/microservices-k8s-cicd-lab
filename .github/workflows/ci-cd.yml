@@ -8,6 +8,9 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
@@ -28,3 +31,15 @@ jobs:
         file: ./user-service/Dockerfile
         push: true
         tags: ${{ secrets.REGISTRY_USERNAME }}/user-service:latest
+
+    - name: Update Kubernetes Manifest with new Image Tag 
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+        sed -i 's|image: .*/user-service:.*|image: ${{ secrets.REGISTRY_USERNAME }}/user-service:${{ github.sha }}|g' k8s/deployment.yaml
+
+        git add k8s/deployment.yaml
+        git commit -m "ci: update image tag to ${{ github.sha }}"
+        git push origin main
+      

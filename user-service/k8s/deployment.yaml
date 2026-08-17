@@ -18,7 +18,8 @@ spec:
       containers: 
       - name: user-service
         image: user-service:latest
-        imagePullPolicy: IfNotPresent
+        # imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports: 
         - containerPort: 8080
         readinessProbe: 
