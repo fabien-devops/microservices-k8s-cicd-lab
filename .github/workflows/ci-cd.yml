@@ -3,6 +3,8 @@ name: Microservice CI/CD
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'k8s/**'
 
 jobs:
   build-and-push:
@@ -32,14 +34,21 @@ jobs:
         push: true
         tags: ${{ secrets.REGISTRY_USERNAME }}/user-service:latest
 
-    - name: Update Kubernetes Manifest with new Image Tag 
+    - name: Update Kubernetes Manifest
       run: |
+        # Remplace directement la valeur du tag image dans deployment.yaml
+        sed -i 's|image: .*|image: ${{ secrets.REGISTRY_USERNAME }}/user-service:${{ github.sha }}|g' k8s/deployment.yaml
+        
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-        sed -i 's|image: .*/user-service:.*|image: ${{ secrets.REGISTRY_USERNAME }}/user-service:${{ github.sha }}|g' user-service/k8s/deployment.yaml
-
-        git add user-service/k8s/deployment.yaml
-        git commit -m "ci: update image tag to ${{ github.sha }}"
-        git push origin main
+        
+        git add k8s/deployment.yaml
+        
+        # Vérifie s'il y a des changements avant de commiter pour éviter l'erreur "nothing to commit"
+        if ! git diff --staged --quiet; then
+          git commit -m "ci: update image tag to ${{ github.sha }} [skip ci]"
+          git push origin main
+        else
+          echo "No changes in deployment.yaml to commit"
+        fi
       
