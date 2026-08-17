@@ -32,7 +32,9 @@ jobs:
         context: ./user-service
         file: ./user-service/Dockerfile
         push: true
-        tags: ${{ secrets.REGISTRY_USERNAME }}/user-service:latest
+        tags: |
+          ${{ secrets.REGISTRY_USERNAME }}/user-service:latest
+          ${{ secrets.REGISTRY_USERNAME }}/user-service:${{ github.sha }}
 
     - name: Update Kubernetes Manifest
       run: |
