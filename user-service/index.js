@@ -3,7 +3,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.get('/', (req, res) => {
-  res.json({ message: "Bienvenue sur le User Service - Lab DevOps !", status: "running" });
+  res.json({ message: "Hello from GitOps v2 !", status: "running" });
 });
 
 app.get('/health', (req, res) => {
