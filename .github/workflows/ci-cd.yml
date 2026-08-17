@@ -37,7 +37,7 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-        sed -i 's|image: .*/user-service:.*|image: ${{ secrets.REGISTRY_USERNAME }}/user-service:${{ github.sha }}|g' k8s/deployment.yaml
+        sed -i 's|image: .*/user-service:.*|image: ${{ secrets.REGISTRY_USERNAME }}/user-service:${{ github.sha }}|g' user-service/k8s/deployment.yaml
 
         git add user-service/k8s/deployment.yaml
         git commit -m "ci: update image tag to ${{ github.sha }}"
