@@ -4,7 +4,10 @@
   "description": "Microservice de test pour CI/CD Kubernetes",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test:unit": "node --test test/unit/*.test.js",
+    "test:integration": "node --test test/integration/*.test.js",
+    "test": "npm run test:unit && npm run test:integration"
   },
   "dependencies": {
     "express": "^4.19.2"

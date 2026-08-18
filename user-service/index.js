@@ -18,6 +18,10 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: "UP" });
 });
 
-app.listen(PORT, () => {
-  console.log(`Serveur démarré sur le port ${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Serveur démarré sur le port ${PORT}`);
+  });
+}
+
+module.exports = app;
