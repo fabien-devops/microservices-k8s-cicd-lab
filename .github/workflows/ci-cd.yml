@@ -45,6 +45,7 @@ jobs:
       with:
         args: >
           -Dsonar.projectKey=user-service
+          -Dsonar.organization=fabien-devops
           -Dsonar.sources=user-service
           -Dsonar.exclusions=**/node_modules/**,**/test/**
 
