@@ -44,7 +44,7 @@ jobs:
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
       with:
         args: >
-          -Dsonar.projectKey=user-service
+          -Dsonar.projectKey=fabien-devops_microservices-k8s-cicd-lab
           -Dsonar.organization=fabien-devops
           -Dsonar.sources=user-service
           -Dsonar.exclusions=**/node_modules/**,**/test/**
