@@ -87,19 +87,33 @@ app.use((req, res) => {
   res.status(404).json({ success: false, message: 'Route not found' });
 });
 
-// -----------------------------------------------------------------------------
-// SERVER START & GRACEFUL SHUTDOWN (Kubernetes Best Practices)
-// -----------------------------------------------------------------------------
-const server = app.listen(PORT, () => {
-  console.log(`[USER-SERVICE] Server running on port ${PORT}`);
-});
+// // -----------------------------------------------------------------------------
+// // SERVER START & GRACEFUL SHUTDOWN (Kubernetes Best Practices)
+// // -----------------------------------------------------------------------------
+// const server = app.listen(PORT, () => {
+//   console.log(`[USER-SERVICE] Server running on port ${PORT}`);
+// });
 
-process.on('SIGTERM', () => {
-  console.log('[USER-SERVICE] SIGTERM signal received. Closing HTTP server gracefully...');
-  server.close(() => {
-    console.log('[USER-SERVICE] HTTP server closed gracefully.');
-    process.exit(0);
+// process.on('SIGTERM', () => {
+//   console.log('[USER-SERVICE] SIGTERM signal received. Closing HTTP server gracefully...');
+//   server.close(() => {
+//     console.log('[USER-SERVICE] HTTP server closed gracefully.');
+//     process.exit(0);
+//   });
+// });
+
+if (require.main === module) {
+  const server = app.listen(PORT, () => {
+    console.log(`[USER-SERVICE] Server running on port ${PORT}`);
   });
-});
+
+  process.on('SIGTERM', () => {
+    console.log('[USER-SERVICE] SIGTERM signal received. Closing HTTP server gracefully...');
+    server.close(() => {
+      console.log('[USER-SERVICE] HTTP server closed gracefully.');
+      process.exit(0);
+    });
+  });
+}
 
 module.exports = app;
