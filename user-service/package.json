@@ -1,10 +1,10 @@
 {
   "name": "user-service",
   "version": "1.0.0",
-  "description": "Microservice de test pour CI/CD Kubernetes",
-  "main": "index.js",
+  "description": "User Service Microservice for Kubernetes CI/CD Lab",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node server.js",
     "test:unit": "node --test test/unit/*.test.js",
     "test:integration": "node --test test/integration/*.test.js",
     "test": "npm run test:unit && npm run test:integration"

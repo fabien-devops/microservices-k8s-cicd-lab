@@ -1,21 +1,35 @@
-# Multi-stage build for smaller images
-# Stage 1: Build
-FROM node:18-alpine AS builder
+# ==========================================
+# STAGE 1: Build & Dependencies
+# ==========================================
+FROM node:20-alpine AS builder
+
 WORKDIR /app
+
 COPY package*.json ./
+
+# Install production dependencies only
 RUN npm ci --only=production
+
 COPY . .
-USER node
-EXPOSE 8080
-CMD ["node", "index.js"]
 
-# Stage 2: Runtime (smaller final image)
-FROM node:18-alpine
+# ==========================================
+# STAGE 2: Runtime (Lightweight final image)
+# ==========================================
+FROM node:20-alpine AS runner
+
 WORKDIR /app
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/index.js ./
 
+ENV NODE_ENV=production
+ENV PORT=8080
+
+# Security: Run as a non-root user
 USER node
+
+# Copy dependencies and source code from the builder stage
+COPY --chown=node:node --from=builder /app/package*.json ./
+COPY --chown=node:node --from=builder /app/node_modules ./node_modules
+COPY --chown=node:node --from=builder /app/server.js ./server.js
+
 EXPOSE 8080
-CMD ["node", "index.js"]
+
+CMD ["node", "server.js"]
