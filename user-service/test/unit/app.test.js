@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
-const app = require('../../index');
+const app = require('../../server');
 
-test('Unit Test: Vérification que l application Express est initialisée', () => {
+test('Unit Test: Verify that the Express app is initialized', () => {
   assert.strictEqual(typeof app, 'function');
 });
