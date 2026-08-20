@@ -17,7 +17,7 @@ spec:
     spec:
       containers: 
       - name: user-service
-        image: user-service:latest
+        image: fabien123/user-service:bae30e5fd1204ce4563cad83350946018028064e
         # imagePullPolicy: IfNotPresent
         imagePullPolicy: Always
         ports: 
