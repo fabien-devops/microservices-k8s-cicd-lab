@@ -11,16 +11,14 @@ An end-to-end production-grade DevOps repository showcasing automated continuous
 
 ## 🏗️ System Architecture
 
-+------------------+      +------------------+      +--------------------+
-|  GitHub Push     | ---> |  GitHub Actions  | ---> |  Docker Registry   |
-|  (Source Code)   |      |  CI Pipeline     |      |  (ghcr.io / Hub)   |
-+------------------+      +------------------+      +--------------------+
-|
-v
-+------------------+      +------------------+      +--------------------+
-|  Kubernetes      | <--- |  ArgoCD          | <--- |  GitOps Repo Sync  |
-|  Cluster (Pods)  |      |  GitOps Engine   |      |  (Manifests)       |
-+------------------+      +------------------+      +--------------------+
+```mermaid
+graph LR
+    A[GitHub Push] -->|Source Code| B[GitHub Actions CI]
+    B -->|Build & Scan| C[Docker Registry]
+    C -->|Container Image| E[Kubernetes Cluster]
+    D[GitOps Repo Sync] -->|Manifests| F[ArgoCD]
+    F -->|Deploy| E
+```
 
 The architecture adheres to modern cloud-native best practices:
 * **Microservices Design**: Decoupled, stateless RESTful service (`user-service`) built with Express.js.
